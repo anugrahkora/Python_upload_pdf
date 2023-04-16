@@ -11,27 +11,16 @@ app = Flask(__name__, template_folder=template_path)
 
 
 def insert_user_data(name, pdf):
-    try:
-        cnx = mysql.connector.connect(user='scott',
-                                      database='employ')
-    except mysql.connector.Error as err:
-        if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
-            print("Something is wrong with your user name or password")
-        elif err.errno == errorcode.ER_BAD_DB_ERROR:
-            print("Database does not exist")
-        else:
-            print(err)
-    else:
-        cnx.close()
-    cnx = mysql.connector.connect.MySQLConnection(user='root', password='root',
-                                                  host='127.0.0.1',
-                                                  database='pdf upload')
-    # con = sqlite3.connect("pdf upload.sqlite")
+
+    cnx = mysql.connector.connect(user='root', password='dontforgetmysql14@#',
+                                  host='127.0.0.1',
+                                  database='resumes')
     cur = cnx.cursor()
     query = """
-        INSERT INTO resume_table (user_name, pdf) VALUES (?, ?);
+        INSERT INTO resume_table (user_name, pdf) VALUES (&s, &S);
     """
     cur.execute(query, [name, pdf])
+    print(cur.column_names)
     cnx.commit()
 
 
